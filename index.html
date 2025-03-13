@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AccountConnect - AI-Powered Client Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f9fafb;
+        }
+        .login-bg {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .channel-badge {
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #3b82f6;
+            margin-right: 12px;
+        }
+        .nav-tab.active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+        .document-card {
+            border-left: 4px solid transparent;
+        }
+        .document-card:hover {
+            background-color: #f3f4f6;
+        }
+        .document-card.selected {
+            border-left: 4px solid #3b82f6;
+            background-color: #eff6ff;
+        }
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        /* Custom scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #c5c5c5;
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #a3a3a3;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="fixed inset-0 flex items-center justify-center login-bg z-50">
+        <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-md slide-in">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 flex items-center justify-center">
+                    <span class="text-blue-600 mr-2"><i class="fas fa-link"></i></span>
+                    AccountConnect
+                </h1>
+                <p class="text-gray-600 mt-2">AI-Powered Client Management</p>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-semibold mb-2" for="email">
+                    Email Address
+                </label>
+                <input class="appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline" id="email" type="email" placeholder="your@email.com">
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-semibold mb-2" for="password">
+                    Password
+                </label>
+                <input class="appearance-none border border-gray-300 rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-500 focus:shadow-outline" id="password" type="password" placeholder="••••••••">
+            </div>
+            
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <input id="remember" type="checkbox" class="h-4 w-4 text-blue-600 border-gray-300 rounded">
+                    <label for="remember" class="ml-2 block text-sm text-gray-700">
+                        Remember me
+                    </label>
+                </div>
+                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">Forgot password?</a>
+            </div>
+            
+            <button id="login-button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-md focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:-translate-y-1">
+                Sign In
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Application (Hidden initially) -->
+    <div id="app" class="hidden">
+        <!-- Top Navigation -->
+        <nav class="bg-white border-b border-gray-200">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between h-16">
+                    <div class="flex">
+                        <div class="flex-shrink-0 flex items-center">
+                            <span class="text-blue-600 text-2xl mr-2"><i class="fas fa-link"></i></span>
+                            <span class="font-bold text-xl text-gray-800">AccountConnect</span>
+                        </div>
+                        <div class="hidden sm:ml-6 sm:flex sm:items-center">
+                            <div class="px-3 py-2 text-sm font-medium text-gray-700">Dashboard</div>
+                            <div class="px-3 py-2 text-sm font-medium text-gray-500">Clients</div>
+                            <div class="px-3 py-2 text-sm font-medium text-gray-500">Reports</div>
+                            <div class="px-3 py-2 text-sm font-medium text-gray-500">Settings</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                            <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:border-blue-500 sm:text-sm" placeholder="Search..." type="search">
+                        </div>
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button class="p-1 rounded-full text-gray-400 hover:text-gray-500">
+                                <i class="fas fa-bell"></i>
+                            </button>
+                            <div class="ml-3 relative">
+                                <div class="flex items-center">
+                                    <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white">
+                                        <span class="text-sm font-medium">JD</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="p-6">
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-gray-800">Client Dashboard</h1>
+                    <div class="flex space-x-2">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                            <i class="fas fa-clock mr-1"></i> Last updated: Just now
+                        </span>
+                        <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                            <i class="fas fa-plus mr-2"></i> Add Client
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI Activity Summary -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 slide-in">
+                    <div class="flex items-start">
+                        <div class="bg-blue-100 rounded-full p-2 mr-3 text-blue-600">
+                            <i class="fas fa-robot text-lg"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-800">AI Activity Summary</h3>
+                            <div class="mt-2 text-sm text-gray-600">
+                                <p class="mb-1"><i class="fas fa-envelope text-blue-500 mr-1"></i> <strong>5 messages</strong> require responses today</p>
+                                <p class="mb-1"><i class="fas fa-file-alt text-blue-500 mr-1"></i> <strong>3 clients</strong> sent new documents in the last 24 hours</p>
+                                <p><i class="fas fa-calendar-alt text-blue-500 mr-1"></i> <strong>Tax deadline approaching</strong> for 2 clients (Riverstone Properties, TechMinds Inc)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Client Card 1 - Needs Attention -->
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer client-card" data-client="riverstone">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold mr-3">
+                                    RP
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Riverstone Properties</h3>
+                                    <p class="text-sm text-gray-500">Real Estate Development</p>
+                                </div>
+                            </div>
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Needs Attention</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">7 unread</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">3 new</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">Today</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Tax return deadline in 5 days</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Card 2 - On Track -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold mr-3">
+                                    TM
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">TechMinds Inc</h3>
+                                    <p class="text-sm text-gray-500">Software Development</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">1 unread</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">All up to date</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">Yesterday</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-yellow-600"><i class="fas fa-clock mr-1"></i> Tax return deadline in 2 weeks</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Card 3 - On Track -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3">
+                                    GC
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Green Coast Retailers</h3>
+                                    <p class="text-sm text-gray-500">Retail Chain</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">None</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">1 new</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">3 days ago</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> All tasks complete</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Card 4 - On Track -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold mr-3">
+                                    SC
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">Sunny Cafe Group</h3>
+                                    <p class="text-sm text-gray-500">Food & Beverage</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">2 unread</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">All up to date</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">Yesterday</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-gray-600"><i class="fas fa-file-invoice-dollar mr-1"></i> Quarterly review scheduled next week</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Card 5 - Needs Attention -->
+                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
+                                    NM
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">North Medical Center</h3>
+                                    <p class="text-sm text-gray-500">Healthcare Provider</p>
+                                </div>
+                            </div>
+                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Needs Attention</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">4 unread</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">5 missing</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">5 days ago</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Missing bank statements for Q1</p>
+                        </div>
+                    </div>
+
+                    <!-- Client Card 6 - On Track -->
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                        <div class="flex justify-between items-start">
+                            <div class="flex items-center">
+                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold mr-3">
+                                    EF
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-800">EcoFarm Produce</h3>
+                                    <p class="text-sm text-gray-500">Agriculture</p>
+                                </div>
+                            </div>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                        </div>
+                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Messages</p>
+                                <p class="font-bold text-gray-800">None</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Documents</p>
+                                <p class="font-bold text-gray-800">All up to date</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Last Contact</p>
+                                <p class="font-bold text-gray-800">1 week ago</p>
+                            </div>
+                        </div>
+                        <div class="mt-3 text-sm">
+                            <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> Tax filing completed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity Section -->
+            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Recent Activity</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-blue-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">Riverstone Properties</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 9:43 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Sent 3 new documents: Q1 Financial Statement, Bank Records, and Invoice #1024</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-green-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">You</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 9:15 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Replied to TechMinds Inc regarding quarterly tax preparation</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-purple-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">System</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 8:30 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">AI categorized 12 documents from North Medical Center</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-yellow-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">Sunny Cafe Group</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Yesterday, 4:22 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Asked question about GST/HST filing deadline</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">View all activity →</button>
+            </div>
+        </div>
+
+        <!-- Client Portal View (Hidden initially) -->
+        <div id="client-portal" class="hidden h-screen flex flex-col">
+            <!-- Back button -->
+            <div class="bg-gray-50 px-6 py-3 border-b border-gray-200">
+                <button id="back-to-dashboard" class="flex items-center text-gray-600 hover:text-gray-900">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span>Back to Dashboard</span>
+                </button>
+            </div>
+            
+            <!-- Client Portal Content -->
+            <div class="flex flex-1 overflow-hidden">
+                <!-- Left Panel - Collapsible Sidebar with Client Info -->
+                <div id="sidebar" class="border-r border-gray-200 bg-white flex flex-col transition-all duration-300 ease-in-out" style="width: 300px;">
+                    <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
+                                RP
+                            </div>
+                            <div>
+                                <h2 class="font-bold text-gray-800">Riverstone Properties</h2>
+                                <p class="text-xs text-gray-500">Real Estate Development</p>
+                            </div>
+                        </div>
+                        <button id="collapse-sidebar" class="text-gray-400 hover:text-gray-600">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="p-4 overflow-y-auto custom-scrollbar flex-1">
+                        <div class="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+                            <p class="text-sm text-red-700 font-medium flex items-center">
+                                <i class="fas fa-exclamation-circle mr-1"></i> Tax deadline: March 15, 2025
+                            </p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Contact Information</h3>
+                            <div class="text-sm">
+                                <p class="mb-1 flex items-center">
+                                    <i class="fas fa-user text-gray-400 w-5"></i> John Riverstone
+                                </p>
+                                <p class="mb-1 flex items-center">
+                                    <i class="fas fa-envelope text-gray-400 w-5"></i> john@riverstoneproperties.com
+                                </p>
+                                <p class="mb-1 flex items-center">
+                                    <i class="fas fa-phone text-gray-400 w-5"></i> (123) 456-7890
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Key Dates</h3>
+                            <div class="text-sm">
+                                <p class="mb-1 flex items-center">
+                                    <i class="fas fa-calendar text-gray-400 w-5"></i> Fiscal Year: Jan-Dec
+                                </p>
+                                <p class="mb-1 flex items-center">
+                                    <i class="fas fa-file-invoice text-gray-400 w-5"></i> GST/HST Due: Quarterly
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Context Information -->
+                        <div class="mb-4">
+                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Key Insights</h3>
+                            <div class="space-y-2">
+                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-2 text-sm">
+                                    <div class="font-medium">Important Information</div>
+                                    <p class="text-xs text-gray-700">
+                                        Client is planning to acquire three new properties in Q2 2025.
+                                    </p>
+                                </div>
+                                <div class="bg-blue-50 border-l-4 border-blue-400 p-2 text-sm">
+                                    <div class="font-medium">Business Structure</div>
+                                    <p class="text-xs text-gray-700">
+                                        Changed from sole proprietorship to corporation in January 2025.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Communication Patterns</h3>
+                            <div class="text-sm bg-gray-50 p-2 rounded border border-gray-200">
+                                <div class="grid grid-cols-2 gap-2 text-center">
+                                    <div>
+                                        <div class="text-sm font-bold text-blue-600">92%</div>
+                                        <div class="text-xs text-gray-500">Response Rate</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-blue-600">5.2 hrs</div>
+                                        <div class="text-xs text-gray-500">Avg. Response</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-blue-600">Morning</div>
+                                        <div class="text-xs text-gray-500">Best Contact</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-blue-600">Email</div>
+                                        <div class="text-xs text-gray-500">Preferred</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Pending Items</h3>
+                            <div class="text-sm space-y-2">
+                                <div class="border border-red-200 rounded p-2 bg-red-50">
+                                    <div class="font-medium text-gray-800">Tax Return Filing</div>
+                                    <div class="text-xs text-red-600">Due in 5 days (Mar 15)</div>
+                                </div>
+                                <div class="border border-gray-200 rounded p-2">
+                                    <div class="font-medium text-gray-800">GST/HST Filing</div>
+                                    <div class="text-xs text-gray-600">Due in 3 weeks (Apr 1)</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-auto pt-4">
+                            <div class="space-y-2">
+                                <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded transition">
+                                    <i class="fas fa-paper-plane mr-1"></i> Message Client
+                                </button>
+                                <button class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm py-2 px-4 rounded transition">
+                                    <i class="fas fa-file-upload mr-1"></i> Request Documents
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Collapsed Sidebar -->
+                <div id="collapsed-sidebar" class="hidden border-r border-gray-200 bg-white flex flex-col items-center py-4" style="width: 60px;">
+                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mb-4">
+                        RP
+                    </div>
+                    <button id="expand-sidebar" class="text-gray-400 hover:text-gray-600 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="flex-1"></div>
+                    <div class="mt-4 flex flex-col space-y-4">
+                        <button class="text-gray-400 hover:text-gray-600 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                        <button class="text-gray-400 hover:text-gray-600 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100">
+                            <i class="fas fa-file-upload"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Main Content -->
+                <div class="flex-1 flex flex-col bg-gray-50 overflow-hidden">
+                    <!-- Tabs Navigation -->
+                    <div class="flex border-b border-gray-200 bg-white">
+                        <button class="nav-tab active flex-1 text-center py-4 px-4 outline-none focus:outline-none" data-tab="communication">
+                            <i class="fas fa-comments mr-2"></i> Communications
+                        </button>
+                        <button class="nav-tab flex-1 text-center py-4 px-4 outline-none focus:outline-none" data-tab="documents">
+                            <i class="fas fa-file-alt mr-2"></i> Documents
+                        </button>
+                    </div>
+                    
+                    <!-- Tab Content -->
+                    <div class="flex-1 overflow-y-auto custom-scrollbar">
+                        <!-- Communication Tab (Visible by default) -->
+                        <div id="tab-communication" class="tab-content p-6 h-full">
+                            <!-- Channel Integration Header -->
+                            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                                <div class="mb-3 flex justify-between items-center">
+                                    <h3 class="font-medium text-gray-800">Connected Channels</h3>
+                                    <div class="flex space-x-2">
+                                        <button id="timeline-view" class="bg-blue-600 text-white px-3 py-1 rounded-md text-sm flex items-center view-toggle">
+                                            <i class="fas fa-stream mr-1"></i> Timeline
+                                        </button>
+                                        <button id="topic-view" class="bg-white text-gray-600 px-3 py-1 rounded-md text-sm border flex items-center view-toggle">
+                                            <i class="fas fa-layer-group mr-1"></i> By Topic
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="flex space-x-2">
+                                    <div class="channel-badge bg-blue-100 text-blue-600 relative">
+                                        <i class="fas fa-envelope"></i>
+                                        <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">7</span>
+                                    </div>
+                                    <div class="channel-badge bg-purple-100 text-purple-600 relative">
+                                        <i class="fab fa-slack"></i>
+                                        <span class="absolute -top-1 -right-1 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                                    </div>
+                                    <div class="channel-badge bg-teal-100 text-teal-600 relative">
+                                        <i class="fab fa-microsoft"></i>
+                                        <span class="absolute -top-1 -right-1 bg-teal-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span>
+                                    </div>
+                                    <button class="text-sm text-blue-600 hover:text-blue-800 ml-auto">
+                                        <i class="fas fa-plus-circle mr-1"></i> Add Channel
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Filters -->
+                            <div class="mb-4 flex flex-wrap gap-2">
+                                <button class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm flex items-center">
+                                    <i class="fas fa-filter mr-1"></i> All Messages
+                                </button>
+                                <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                    <i class="fas fa-envelope mr-1"></i> Email Only
+                                </button>
+                                <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                    <i class="fab fa-slack mr-1"></i> Slack Only
+                                </button>
+                                <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                    <i class="fab fa-microsoft mr-1"></i> Teams Only
+                                </button>
+                                <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                    <i class="fas fa-bell mr-1"></i> Unread
+                                </button>
+                                <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                    <i class="fas fa-paperclip mr-1"></i> With Attachments
+                                </button>
+                                
+                                <!-- Date Range Selector -->
+                                <div class="ml-auto">
+                                    <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
+                                        <i class="fas fa-calendar-alt mr-1"></i> Last 30 Days
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline View (default) -->
+                            <div id="timeline-view-content" class="space-y-4">
+                                <!-- Message 1 (Email) -->
+                                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-blue-500">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <div class="channel-badge bg-blue-100 text-blue-600 mr-2">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <span class="font-medium">John Riverstone</span>
+                                            <span class="mx-2 text-gray-400">•</span>
+                                            <span class="text-sm text-gray-500">Today, 9:43 AM</span>
+                                        </div>
+                                        <div>
+                                            <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">New</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-700 mb-3">
+                                        <p>Hello,</p>
+                                        <p class="mt-2">I'm sending over the requested documents for our Q1 financial statement and the bank records you requested. I've also included the invoice #1024 for the recent property acquisition.</p>
+                                        <p class="mt-2">Can you let me know if you need anything else for the tax preparation?</p>
+                                        <p class="mt-2">Thanks,<br>John</p>
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded border border-gray-200">
+                                        <div class="text-sm font-medium text-gray-700 mb-2">Attachments (3)</div>
+                                        <div class="grid grid-cols-1 gap-2">
+                                            <div class="flex items-center bg-white p-2 rounded border border-gray-200">
+                                                <i class="fas fa-file-pdf text-red-500 mr-2"></i>
+                                                <span class="text-sm">Q1_Financial_Statement.pdf</span>
+                                                <span class="ml-auto text-blue-600 hover:text-blue-800 cursor-pointer">
+                                                    <i class="fas fa-eye"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex items-center bg-white p-2 rounded border border-gray-200">
+                                                <i class="fas fa-file-excel text-green-500 mr-2"></i>
+                                                <span class="text-sm">Bank_Records_Jan_Mar.xlsx</span>
+                                                <span class="ml-auto text-blue-600 hover:text-blue-800 cursor-pointer">
+                                                    <i class="fas fa-eye"></i>
+                                                </span>
+                                            </div>
+                                            <div class="flex items-center bg-white p-2 rounded border border-gray-200">
+                                                <i class="fas fa-file-invoice text-blue-500 mr-2"></i>
+                                                <span class="text-sm">Invoice_1024.pdf</span>
+                                                <span class="ml-auto text-blue-600 hover:text-blue-800 cursor-pointer">
+                                                    <i class="fas fa-eye"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3 flex">
+                                        <button class="text-blue-600 text-sm font-medium hover:text-blue-800 mr-4">
+                                            <i class="fas fa-reply mr-1"></i> Reply
+                                        </button>
+                                        <button class="text-gray-600 text-sm font-medium hover:text-gray-800">
+                                            <i class="fas fa-tag mr-1"></i> Categorize
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 2 (Teams) -->
+                                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-teal-500">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <div class="channel-badge bg-teal-100 text-teal-600 mr-2">
+                                                <i class="fab fa-microsoft"></i>
+                                            </div>
+                                            <span class="font-medium">Sarah Riverstone</span>
+                                            <span class="mx-2 text-gray-400">•</span>
+                                            <span class="text-sm text-gray-500">Today, 8:30 AM</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-700 mb-3">
+                                        <p>Just a quick note that John will be sending over those financial documents we discussed in our last meeting. Let me know when you've received everything.</p>
+                                    </div>
+                                    <div class="mt-3 flex">
+                                        <button class="text-blue-600 text-sm font-medium hover:text-blue-800 mr-4">
+                                            <i class="fas fa-reply mr-1"></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 3 (Your message - email) -->
+                                <div class="bg-white rounded-lg shadow-sm p-4">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <div class="channel-badge bg-blue-100 text-blue-600 mr-2">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <span class="font-medium">You</span>
+                                            <span class="mx-2 text-gray-400">•</span>
+                                            <span class="text-sm text-gray-500">Yesterday, 2:15 PM</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-700 mb-3">
+                                        <p>Hi John,</p>
+                                        <p class="mt-2">We're working on your tax preparation and need a few documents to complete the process:</p>
+                                        <ol class="list-decimal ml-5 mt-2">
+                                            <li>Q1 Financial Statement</li>
+                                            <li>Bank records for January through March</li>
+                                            <li>Invoice #1024 for the new property acquisition</li>
+                                        </ol>
+                                        <p class="mt-2">Please send these at your earliest convenience so we can meet the March 15 deadline.</p>
+                                        <p class="mt-2">Best regards,<br>Your Accountant</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Message 4 (Slack) -->
+                                <div class="bg-white rounded-lg shadow-sm p-4 border-l-4 border-purple-500">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="flex items-center">
+                                            <div class="channel-badge bg-purple-100 text-purple-600 mr-2">
+                                                <i class="fab fa-slack"></i>
+                                            </div>
+                                            <span class="font-medium">John Riverstone</span>
+                                            <span class="mx-2 text-gray-400">•</span>
+                                            <span class="text-sm text-gray-500">Yesterday, 10:30 AM</span>
+                                        </div>
+                                    </div>
+                                    <div class="text-gray-700 mb-3">
+                                        <p>Quick question about the upcoming tax filing - do we need to prepare anything special for the new property acquisition? I'm gathering all the documents but wanted to check if there's anything specific I should look for.</p>
+                                    </div>
+                                    <div class="mt-3 flex">
+                                        <button class="text-blue-600 text-sm font-medium hover:text-blue-800 mr-4">
+                                            <i class="fas fa-reply mr-1"></i> Reply
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- AI Summary of Older Messages -->
+                                <div class="bg-gray-50 border border-gray-200 rounded-lg p-3">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <h3 class="text-sm font-medium text-gray-700">
+                                            <i class="fas fa-robot mr-1"></i> AI Summary of Previous Messages
+                                        </h3>
+                                        <button class="text-xs text-blue-600 hover:text-blue-800">
+                                            Show 8 more messages
+                                        </button>
+                                    </div>
+                                    <div class="text-sm text-gray-600">
+                                        <p>Earlier discussions focused on preparing for the Q1 tax filing. Key points:</p>
+                                        <ul class="list-disc ml-5 mt-1">
+                                            <li>Initial tax preparation meeting scheduled for March 1st</li>
+                                            <li>Discussion of new property acquisition and its tax implications</li>
+                                            <li>Agreement on quarterly filing schedule for the fiscal year</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <!-- Compose Box -->
+                                <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mt-6">
+                                    <div class="mb-2 flex justify-between">
+                                        <div class="flex items-center">
+                                            <div class="channel-badge bg-blue-100 text-blue-600 mr-2">
+                                                <i class="fas fa-envelope"></i>
+                                            </div>
+                                            <span class="text-sm font-medium">Reply via Email</span>
+                                        </div>
+                                        <div class="flex">
+                                            <button class="text-gray-500 hover:text-gray-700 text-sm mr-2">
+                                                <i class="fas fa-exchange-alt mr-1"></i> Change Channel
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="border border-gray-300 rounded-md p-3 mb-3">
+                                        <textarea placeholder="Type your message here..." class="w-full outline-none resize-none" rows="3"></textarea>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <div class="flex space-x-2">
+                                            <button class="text-gray-500 hover:text-gray-700">
+                                                <i class="fas fa-paperclip"></i>
+                                            </button>
+                                            <button class="text-gray-500 hover:text-gray-700">
+                                                <i class="fas fa-smile"></i>
+                                            </button>
+                                            <button class="text-gray-500 hover:text-gray-700">
+                                                <i class="fas fa-calendar-alt"></i>
+                                            </button>
+                                        </div>
+                                        <div>
+                                            <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 text-sm font-medium">
+                                                Send Reply
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Topic View (hidden initially) -->
+                            <div id="topic-view-content" class="hidden">
+                                <!-- AI-Generated Topic Clusters -->
+                                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <h3 class="text-base font-medium text-blue-800">
+                                            <i class="fas fa-robot mr-1"></i> AI-Organized Topic Clusters
+                                        </h3>
+                                        <span class="text-xs text-blue-600">Updated 5 minutes ago</span>
+                                    </div>
+                                    <p class="text-sm text-gray-700 mb-4">All client communications have been automatically organized into the following topic clusters:</p>
+                                    <div class="flex flex-wrap gap-3">
+                                        <button class="bg-white text-blue-700 px-3 py-2 rounded text-sm border border-blue-200 font-medium hover:bg-blue-50 flex items-center">
+                                            Tax Return Preparation <span class="ml-2 bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 text-xs">7</span>
+                                        </button>
+                                        <button class="bg-white text-blue-700 px-3 py-2 rounded text-sm border border-blue-200 font-medium hover:bg-blue-50 flex items-center">
+                                            Financial Statements <span class="ml-2 bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 text-xs">5</span>
+                                        </button>
+                                        <button class="bg-white text-blue-700 px-3 py-2 rounded text-sm border border-blue-200 font-medium hover:bg-blue-50 flex items-center">
+                                            Bank Records <span class="ml-2 bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 text-xs">3</span>
+                                        </button>
+                                        <button class="bg-white text-blue-700 px-3 py-2 rounded text-sm border border-blue-200 font-medium hover:bg-blue-50 flex items-center">
+                                            Property Acquisitions <span class="ml-2 bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 text-xs">4</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Topic: Tax Return Preparation -->
+                                <div class="mb-8">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-2">
+                                            <i class="fas fa-file-invoice"></i>
+                                        </div>
+                                        <h3 class="text-lg font-medium text-gray-800">Tax Return Preparation</h3>
+                                        <span class="ml-2 text-sm text-gray-500">7 messages across all channels</span>
+                                    </div>
+                                    
+                                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-3">
+                                        <div class="flex items-start">
+                                            <i class="fas fa-robot text-blue-600 mt-1 mr-2"></i>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-800">AI Summary of this Topic</div>
+                                                <p class="text-sm text-gray-600 mt-1">
+                                                    Discussion centers around the March 15th tax filing deadline. Client has been asked to provide Q1 financial statements, bank records, and property acquisition documents. Client inquired about special considerations for new property.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="space-y-3">
+                                        <!-- Topic Message 1 -->
+                                        <div class="bg-white rounded-lg shadow-sm p-3 border-l-4 border-blue-500">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <div class="flex items-center">
+                                                    <div class="channel-badge bg-blue-100 text-blue-600 mr-1 text-xs">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
+                                                    <span class="font-medium text-sm">John Riverstone</span>
+                                                    <span class="mx-2 text-gray-400">•</span>
+                                                    <span class="text-xs text-gray-500">Today, 9:43 AM</span>
+                                                </div>
+                                            </div>
+                                            <div class="text-sm text-gray-700 my-1">
+                                                <p>I'm sending over the requested documents for our Q1 financial statement... Can you let me know if you need anything else for the tax preparation?</p>
+                                            </div>
+                                            <div class="text-xs text-blue-600">3 attachments • <a href="#" class="hover:underline">View full message</a></div>
+                                        </div>
+                                        
+                                        <!-- Topic Message 2 -->
+                                        <div class="bg-white rounded-lg shadow-sm p-3">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <div class="flex items-center">
+                                                    <div class="channel-badge bg-blue-100 text-blue-600 mr-1 text-xs">
+                                                        <i class="fas fa-envelope"></i>
+                                                    </div>
+                                                    <span class="font-medium text-sm">You</span>
+                                                    <span class="mx-2 text-gray-400">•</span>
+                                                    <span class="text-xs text-gray-500">Yesterday, 2:15 PM</span>
+                                                </div>
+                                            </div>
+                                            <div class="text-sm text-gray-700 my-1">
+                                                <p>We're working on your tax preparation and need a few documents to complete the process...</p>
+                                            </div>
+                                            <div class="text-xs text-blue-600"><a href="#" class="hover:underline">View full message</a></div>
+                                        </div>
+                                        
+                                        <!-- Topic Message 3 -->
+                                        <div class="bg-white rounded-lg shadow-sm p-3 border-l-4 border-purple-500">
+                                            <div class="flex justify-between items-start mb-1">
+                                                <div class="flex items-center">
+                                                    <div class="channel-badge bg-purple-100 text-purple-600 mr-1 text-xs">
+                                                        <i class="fab fa-slack"></i>
+                                                    </div>
+                                                    <span class="font-medium text-sm">John Riverstone</span>
+                                                    <span class="mx-2 text-gray-400">•</span>
+                                                    <span class="text-xs text-gray-500">Yesterday, 10:30 AM</span>
+                                                </div>
+                                            </div>
+                                            <div class="text-sm text-gray-700 my-1">
+                                                <p>Quick question about the upcoming tax filing - do we need to prepare anything special for the new property acquisition?...</p>
+                                            </div>
+                                            <div class="text-xs text-blue-600"><a href="#" class="hover:underline">View full message</a></div>
+                                        </div>
+                                        
+                                        <button class="w-full text-blue-600 text-sm hover:text-blue-800 py-2">
+                                            View 4 more messages in this topic
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Topic: Property Acquisitions (partial view) -->
+                                <div class="mb-4">
+                                    <div class="flex items-center mb-3">
+                                        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-2">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                        <h3 class="text-lg font-medium text-gray-800">Property Acquisitions</h3>
+                                        <span class="ml-2 text-sm text-gray-500">4 messages across all channels</span>
+                                    </div>
+                                    
+                                    <div class="bg-white rounded-lg shadow-sm p-3 border border-gray-200">
+                                        <button class="w-full text-blue-600 text-sm hover:text-blue-800 py-2">
+                                            View messages in this topic
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Documents Tab (Hidden initially) -->
+                        <div id="tab-documents" class="tab-content p-6 hidden h-full">
+                            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-medium text-gray-800">Document Categories</h3>
+                                    <button class="text-sm text-blue-600 hover:text-blue-800">
+                                        <i class="fas fa-cog mr-1"></i> Edit Categories
+                                    </button>
+                                </div>
+                                
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-file-invoice text-blue-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">Tax Returns</div>
+                                        <div class="text-xs text-gray-500">8 documents</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-chart-line text-green-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">Financial Statements</div>
+                                        <div class="text-xs text-gray-500">12 documents</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-receipt text-purple-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">Receipts & Invoices</div>
+                                        <div class="text-xs text-gray-500">27 documents</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-envelope-open-text text-red-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">CRA Correspondence</div>
+                                        <div class="text-xs text-gray-500">5 documents</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-university text-yellow-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">Banking Documents</div>
+                                        <div class="text-xs text-gray-500">18 documents</div>
+                                    </div>
+                                    <div class="border border-gray-200 rounded p-3 text-center hover:bg-blue-50 cursor-pointer">
+                                        <i class="fas fa-building text-indigo-500 text-xl mb-1"></i>
+                                        <div class="text-sm font-medium">Corporate Records</div>
+                                        <div class="text-xs text-gray-500">6 documents</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Recent Documents with Auto-categorization -->
+                            <div class="bg-white rounded-lg shadow-sm p-4 mb-4">
+                                <div class="flex justify-between items-center mb-3">
+                                    <h3 class="font-medium text-gray-800">Recently Added Documents</h3>
+                                    <div class="text-sm text-gray-500">Showing 5 of 76 documents</div>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <!-- Document 1 with AI categorization -->
+                                    <div class="document-card p-3 rounded flex items-center border border-gray-200 bg-blue-50">
+                                        <i class="fas fa-file-pdf text-red-500 mr-3 text-lg"></i>
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <span class="font-medium text-gray-800">Q1_Financial_Statement.pdf</span>
+                                                <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">New</span>
+                                            </div>
+                                            <div class="text-sm text-gray-500">Added today via Email</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="bg-white border border-green-200 rounded-md px-2 py-1 text-xs text-green-700 flex items-center">
+                                                <i class="fas fa-robot mr-1"></i> Auto-categorized: Financial Statements
+                                            </div>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Document 2 with AI categorization -->
+                                    <div class="document-card p-3 rounded flex items-center border border-gray-200 bg-blue-50">
+                                        <i class="fas fa-file-excel text-green-500 mr-3 text-lg"></i>
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <span class="font-medium text-gray-800">Bank_Records_Jan_Mar.xlsx</span>
+                                                <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">New</span>
+                                            </div>
+                                            <div class="text-sm text-gray-500">Added today via Email</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="bg-white border border-green-200 rounded-md px-2 py-1 text-xs text-green-700 flex items-center">
+                                                <i class="fas fa-robot mr-1"></i> Auto-categorized: Banking Documents
+                                            </div>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Document 3 with AI categorization -->
+                                    <div class="document-card p-3 rounded flex items-center border border-gray-200 bg-blue-50">
+                                        <i class="fas fa-file-invoice text-blue-500 mr-3 text-lg"></i>
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <span class="font-medium text-gray-800">Invoice_1024.pdf</span>
+                                                <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">New</span>
+                                            </div>
+                                            <div class="text-sm text-gray-500">Added today via Email</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <div class="bg-white border border-green-200 rounded-md px-2 py-1 text-xs text-green-700 flex items-center">
+                                                <i class="fas fa-robot mr-1"></i> Auto-categorized: Receipts & Invoices
+                                            </div>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Document 4 -->
+                                    <div class="document-card p-3 rounded flex items-center border border-gray-200">
+                                        <i class="fas fa-file-pdf text-red-500 mr-3 text-lg"></i>
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <span class="font-medium text-gray-800">2024_Corporate_Tax_Return.pdf</span>
+                                            </div>
+                                            <div class="text-sm text-gray-500">Added 3 days ago via Email</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">Tax Returns</span>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Document 5 -->
+                                    <div class="document-card p-3 rounded flex items-center border border-gray-200">
+                                        <i class="fas fa-file-pdf text-red-500 mr-3 text-lg"></i>
+                                        <div class="flex-1">
+                                            <div class="flex items-center">
+                                                <span class="font-medium text-gray-800">CRA_Notice_2024.pdf</span>
+                                            </div>
+                                            <div class="text-sm text-gray-500">Added 1 week ago via Email</div>
+                                        </div>
+                                        <div class="mr-4">
+                                            <span class="text-xs bg-gray-100 text-gray-700 px-2 py-1 rounded">CRA Correspondence</span>
+                                        </div>
+                                        <button class="text-gray-400 hover:text-gray-600">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">View all documents →</button>
+                            </div>
+                            
+                            <!-- Document Version Comparison -->
+                            <div class="bg-white rounded-lg shadow-sm p-4">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h3 class="font-medium text-gray-800">Document Versions</h3>
+                                    <div class="text-sm text-gray-600">
+                                        <i class="fas fa-info-circle mr-1"></i> 
+                                        AI automatically tracks document versions
+                                    </div>
+                                </div>
+                                
+                                <div class="border border-gray-200 rounded-lg p-4">
+                                    <div class="flex items-center mb-4">
+                                        <i class="fas fa-chart-line text-green-500 mr-2 text-lg"></i>
+                                        <span class="font-medium text-gray-800">Financial Statement</span>
+                                        <span class="mx-2 text-gray-400">•</span>
+                                        <span class="text-sm text-gray-500">3 versions detected</span>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <div class="h-1 w-full bg-gray-200 rounded-full">
+                                            <div class="bg-blue-500 h-1 rounded-full" style="width: 100%;"></div>
+                                        </div>
+                                        <div class="flex justify-between mt-1 text-xs text-gray-500">
+                                            <span>Jan 15, 2024</span>
+                                            <span>Feb 10, 2024</span>
+                                            <span>Mar 10, 2024 (Latest)</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="bg-blue-50 border border-blue-200 rounded p-3 mb-4">
+                                        <div class="flex items-start">
+                                            <i class="fas fa-robot text-blue-600 mt-1 mr-2"></i>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-800">AI-Detected Changes in Latest Version:</div>
+                                                <ul class="list-disc ml-5 mt-1 text-sm text-gray-600">
+                                                    <li>Updated revenue figures: $1.2M → $1.35M</li>
+                                                    <li>Added new property acquisition (123 Main St)</li>
+                                                    <li>Revised expense allocation for Q1</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex space-x-2">
+                                        <button class="bg-white border border-gray-300 rounded px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">
+                                            <i class="fas fa-eye mr-1"></i> View Latest
+                                        </button>
+                                        <button class="bg-white border border-gray-300 rounded px-3 py-1 text-sm text-gray-700 hover:bg-gray-50">
+                                            <i class="fas fa-history mr-1"></i> Compare Versions
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    </div>
+
+    <script>
+        // Login functionality
+        document.getElementById('login-button').addEventListener('click', function() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app').classList.remove('hidden');
+        });
+        
+        // Dashboard to Client Portal navigation
+        document.querySelectorAll('.client-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.getElementById('dashboard').classList.add('hidden');
+                document.getElementById('client-portal').classList.remove('hidden');
+            });
+        });
+        
+        // Back to Dashboard
+        document.getElementById('back-to-dashboard').addEventListener('click', function() {
+            document.getElementById('client-portal').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+        });
+        
+        // Sidebar collapse/expand
+        document.getElementById('collapse-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('collapsed-sidebar').classList.remove('hidden');
+        });
+        
+        document.getElementById('expand-sidebar').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.remove('hidden');
+            document.getElementById('collapsed-sidebar').classList.add('hidden');
+        });
+        
+        // Tab navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-tab').forEach(t => {
+                    t.classList.remove('active');
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all tab content
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                
+                // Show the corresponding tab content
+                const tabId = this.getAttribute('data-tab');
+                document.getElementById('tab-' + tabId).classList.remove('hidden');
+            });
+        });
+        
+        // Communication view toggle (Timeline/Topic)
+        document.querySelectorAll('.view-toggle').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Toggle active class
+                document.querySelectorAll('.view-toggle').forEach(b => {
+                    b.classList.remove('bg-blue-600', 'text-white');
+                    b.classList.add('bg-white', 'text-gray-600');
+                });
+                this.classList.remove('bg-white', 'text-gray-600');
+                this.classList.add('bg-blue-600', 'text-white');
+                
+                // Toggle content visibility
+                if (this.id === 'timeline-view') {
+                    document.getElementById('timeline-view-content').classList.remove('hidden');
+                    document.getElementById('topic-view-content').classList.add('hidden');
+                } else {
+                    document.getElementById('timeline-view-content').classList.add('hidden');
+                    document.getElementById('topic-view-content').classList.remove('hidden');
+                }
+            });
+        });
+        
+        // Document selection
+        document.querySelectorAll('.document-card').forEach(doc => {
+            doc.addEventListener('click', function() {
+                document.querySelectorAll('.document-card').forEach(d => {
+                    d.classList.remove('selected');
+                });
+                this.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>
