@@ -164,9 +164,9 @@
         </nav>
 
         <!-- Dashboard -->
-        <div id="dashboard" class="p-6">
+        <div id="dashboard" class="p-12">
             <div class="mb-8">
-                <div class="flex justify-between items-center mb-6">
+                <div class="flex justify-between items-center mb-10">
                     <h1 class="text-2xl font-bold text-gray-800">Client Dashboard</h1>
                     <div class="flex space-x-2">
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
@@ -179,7 +179,7 @@
                 </div>
 
                 <!-- AI Activity Summary -->
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6 slide-in">
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-12 slide-in">
                     <div class="flex items-start">
                         <div class="bg-blue-100 rounded-full p-2 mr-3 text-blue-600">
                             <i class="fas fa-robot text-lg"></i>
@@ -196,7 +196,7 @@
                 </div>
 
                 <!-- Client Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     <!-- Client Card 1 - Needs Attention -->
                     <div class="bg-white rounded-lg border border-red-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer client-card" data-client="riverstone">
                         <div class="flex justify-between items-start">
@@ -211,23 +211,24 @@
                             </div>
                             <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Needs Attention</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">7 unread</p>
+                                <p class="font-bold text-red-600">Awaiting Response</p>
+                                <p class="text-gray-500">3</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">3 new</p>
+                                <p class="font-bold text-orange-600">Follow Up</p>
+                                <p class="text-gray-500">2</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">Today</p>
+                                <p class="font-bold text-blue-600">Document</p>
+                                <p class="text-gray-500">8</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- Remove the tax return deadline line -->
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Tax return deadline in 5 days</p>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Client Card 2 - On Track -->
@@ -244,23 +245,23 @@
                             </div>
                             <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">1 unread</p>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Teams/Slack</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
                                 <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">All up to date</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">Yesterday</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-yellow-600"><i class="fas fa-clock mr-1"></i> Tax return deadline in 2 weeks</p>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Client Card 3 - On Track -->
@@ -277,23 +278,23 @@
                             </div>
                             <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">None</p>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Teams/Slack</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
                                 <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">1 new</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">3 days ago</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> All tasks complete</p>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Client Card 4 - On Track -->
@@ -310,23 +311,23 @@
                             </div>
                             <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">2 unread</p>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Teams/Slack</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
                                 <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">All up to date</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">Yesterday</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-gray-600"><i class="fas fa-file-invoice-dollar mr-1"></i> Quarterly review scheduled next week</p>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Client Card 5 - Needs Attention -->
@@ -341,25 +342,25 @@
                                     <p class="text-sm text-gray-500">Healthcare Provider</p>
                                 </div>
                             </div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Needs Attention</span>
+                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">4 unread</p>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Teams/Slack</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
                                 <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">5 missing</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">5 days ago</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Missing bank statements for Q1</p>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Client Card 6 - On Track -->
@@ -376,29 +377,29 @@
                             </div>
                             <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-4 grid grid-cols-3 gap-2 text-sm">
+                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
                             <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Messages</p>
-                                <p class="font-bold text-gray-800">None</p>
+                                <p class="text-gray-500">Email</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            </div>
+                            <div class="bg-gray-50 p-2 rounded">
+                                <p class="text-gray-500">Teams/Slack</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                             <div class="bg-gray-50 p-2 rounded">
                                 <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-gray-800">All up to date</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Last Contact</p>
-                                <p class="font-bold text-gray-800">1 week ago</p>
+                                <p class="font-bold text-green-600">All Caught Up!</p>
                             </div>
                         </div>
-                        <div class="mt-3 text-sm">
+                        <!-- <div class="mt-3 text-sm">
                             <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> Tax filing completed</p>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
 
             <!-- Recent Activity Section -->
-            <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mt-6">
+            <!-- <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mt-6">
                 <h2 class="text-lg font-bold text-gray-800 mb-4">Recent Activity</h2>
                 <div class="space-y-4">
                     <div class="flex items-start">
@@ -447,7 +448,7 @@
                     </div>
                 </div>
                 <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">View all activity →</button>
-            </div>
+            </div> -->
         </div>
 
         <!-- Client Portal View (Hidden initially) -->
@@ -463,7 +464,7 @@
             <!-- Client Portal Content -->
             <div class="flex flex-1 overflow-hidden">
                 <!-- Left Panel - Collapsible Sidebar with Client Info -->
-                <div id="sidebar" class="border-r border-gray-200 bg-white flex flex-col transition-all duration-300 ease-in-out" style="width: 300px;">
+                <div id="sidebar" class="border-r border-gray-200 bg-white flex flex-col transition-all duration-300 ease-in-out" style="width: 400px;">
                     <div class="flex justify-between items-center p-4 border-b border-gray-200">
                         <div class="flex items-center">
                             <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
@@ -482,98 +483,102 @@
                     <div class="p-4 overflow-y-auto custom-scrollbar flex-1">
                         <div class="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
                             <p class="text-sm text-red-700 font-medium flex items-center">
-                                <i class="fas fa-exclamation-circle mr-1"></i> Tax deadline: March 15, 2025
+                                <i class="fas fa-exclamation-circle mr-1"></i> Priority: Tax deadline March 15, 2025
                             </p>
                         </div>
                         
-                        <div class="mb-4">
-                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Contact Information</h3>
-                            <div class="text-sm">
-                                <p class="mb-1 flex items-center">
-                                    <i class="fas fa-user text-gray-400 w-5"></i> John Riverstone
-                                </p>
-                                <p class="mb-1 flex items-center">
-                                    <i class="fas fa-envelope text-gray-400 w-5"></i> john@riverstoneproperties.com
-                                </p>
-                                <p class="mb-1 flex items-center">
-                                    <i class="fas fa-phone text-gray-400 w-5"></i> (123) 456-7890
-                                </p>
+                        <div class="flex items-center mb-3">
+                            <span class="text-xs text-gray-500 uppercase font-semibold">COMMUNICATION RECAP</span>
+                            <div class="ml-2 bg-blue-100 text-blue-700 text-xs px-2 py-0.5 rounded-full flex items-center">
+                                <i class="fas fa-robot mr-1 text-xs"></i> AI Generated
                             </div>
                         </div>
                         
-                        <div class="mb-4">
-                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Key Dates</h3>
-                            <div class="text-sm">
-                                <p class="mb-1 flex items-center">
-                                    <i class="fas fa-calendar text-gray-400 w-5"></i> Fiscal Year: Jan-Dec
-                                </p>
-                                <p class="mb-1 flex items-center">
-                                    <i class="fas fa-file-invoice text-gray-400 w-5"></i> GST/HST Due: Quarterly
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <!-- AI Context Information -->
-                        <div class="mb-4">
-                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Key Insights</h3>
-                            <div class="space-y-2">
-                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-2 text-sm">
-                                    <div class="font-medium">Important Information</div>
-                                    <p class="text-xs text-gray-700">
-                                        Client is planning to acquire three new properties in Q2 2025.
-                                    </p>
+                        <!-- Timeline with perfect alignment -->
+                        <div class="relative pt-1">
+                            <!-- Timeline line - centered behind dots -->
+                            <div class="absolute left-2 top-3 bottom-0 w-0.5 bg-gray-200"></div>
+                            
+                            <!-- Timeline Entry 1 -->
+                            <div class="relative pl-8 pb-6">
+                                <!-- Perfectly aligned dot -->
+                                <div class="absolute left-0 top-1.5 flex items-center justify-center">
+                                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                                    </div>
                                 </div>
-                                <div class="bg-blue-50 border-l-4 border-blue-400 p-2 text-sm">
-                                    <div class="font-medium">Business Structure</div>
-                                    <p class="text-xs text-gray-700">
-                                        Changed from sole proprietorship to corporation in January 2025.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Communication Patterns</h3>
-                            <div class="text-sm bg-gray-50 p-2 rounded border border-gray-200">
-                                <div class="grid grid-cols-2 gap-2 text-center">
-                                    <div>
-                                        <div class="text-sm font-bold text-blue-600">92%</div>
-                                        <div class="text-xs text-gray-500">Response Rate</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-blue-600">5.2 hrs</div>
-                                        <div class="text-xs text-gray-500">Avg. Response</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-blue-600">Morning</div>
-                                        <div class="text-xs text-gray-500">Best Contact</div>
-                                    </div>
-                                    <div>
-                                        <div class="text-sm font-bold text-blue-600">Email</div>
-                                        <div class="text-xs text-gray-500">Preferred</div>
+                                <div class="bg-white rounded-lg border border-gray-200 p-3">
+                                    <div class="mb-1 font-medium text-gray-800">March 8 - March 10, 2025</div>
+                                    <p class="text-sm text-gray-600 mb-2"><span class="font-medium">Main Topics:</span> Tax preparation documents, Financial statements</p>
+                                    <p class="text-sm text-gray-600">Client sent Q1 financials and bank records. Confirmed tax deadline. Discussed invoice #1024 for property acquisition.</p>
+                                    <div class="mt-2 flex items-center text-xs text-gray-500">
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fas fa-envelope text-blue-600 mr-1"></i> 2 emails
+                                        </div>
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fab fa-microsoft text-teal-600 mr-1"></i> 1 teams
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <h3 class="text-xs text-gray-500 uppercase font-semibold mb-2">Pending Items</h3>
-                            <div class="text-sm space-y-2">
-                                <div class="border border-red-200 rounded p-2 bg-red-50">
-                                    <div class="font-medium text-gray-800">Tax Return Filing</div>
-                                    <div class="text-xs text-red-600">Due in 5 days (Mar 15)</div>
+                            
+                            <!-- Timeline Entry 2 -->
+                            <div class="relative pl-8 pb-6">
+                                <div class="absolute left-0 top-1.5 flex items-center justify-center">
+                                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                                    </div>
                                 </div>
-                                <div class="border border-gray-200 rounded p-2">
-                                    <div class="font-medium text-gray-800">GST/HST Filing</div>
-                                    <div class="text-xs text-gray-600">Due in 3 weeks (Apr 1)</div>
+                                <div class="bg-white rounded-lg border border-gray-200 p-3">
+                                    <div class="mb-1 font-medium text-gray-800">March 3 - March 7, 2025</div>
+                                    <p class="text-sm text-gray-600 mb-2"><span class="font-medium">Main Topics:</span> Property acquisition, Tax implications</p>
+                                    <p class="text-sm text-gray-600">Client asked about tax implications for new property. Reviewed required documentation.</p>
+                                    <div class="mt-2 flex items-center text-xs text-gray-500">
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fas fa-envelope text-blue-600 mr-1"></i> 1 email
+                                        </div>
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fab fa-slack text-purple-600 mr-1"></i> 2 slack messages
+                                        </div>
+                                    </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Timeline Entry 3 -->
+                            <div class="relative pl-8 pb-6">
+                                <div class="absolute left-0 top-1.5 flex items-center justify-center">
+                                    <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-lg border border-gray-200 p-3">
+                                    <div class="mb-1 font-medium text-gray-800">February 20 - March 2, 2025</div>
+                                    <p class="text-sm text-gray-600 mb-2"><span class="font-medium">Main Topics:</span> Tax filing planning, Financial documents</p>
+                                    <p class="text-sm text-gray-600">Scheduled tax prep meeting. Shared document list. Client confirmed delivery timeline and deadline importance.</p>
+                                    <div class="mt-2 flex items-center text-xs text-gray-500">
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fas fa-envelope text-blue-600 mr-1"></i> 3 emails
+                                        </div>
+                                        <div class="mr-3 flex items-center">
+                                            <i class="fab fa-microsoft text-teal-600 mr-1"></i> 1 teams meeting
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Show more button -->
+                            <div class="text-center mt-2 pl-8">
+                                <button class="text-blue-600 text-sm hover:text-blue-800">
+                                    Show earlier communication <i class="fas fa-chevron-down ml-1"></i>
+                                </button>
                             </div>
                         </div>
                         
-                        <div class="mt-auto pt-4">
+                        <!-- Quick action buttons at bottom -->
+                        <div class="mt-8 pt-4 border-t border-gray-200">
                             <div class="space-y-2">
                                 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded transition">
-                                    <i class="fas fa-paper-plane mr-1"></i> Message Client
+                                    <i class="fas fa-paper-plane mr-1"></i> Send Message
                                 </button>
                                 <button class="w-full border border-gray-300 hover:bg-gray-50 text-gray-700 text-sm py-2 px-4 rounded transition">
                                     <i class="fas fa-file-upload mr-1"></i> Request Documents
@@ -583,7 +588,7 @@
                     </div>
                 </div>
                 
-                <!-- Collapsed Sidebar -->
+                <!-- Collapsed Sidebar bar (shows only with it is collapsed) -->
                 <div id="collapsed-sidebar" class="hidden border-r border-gray-200 bg-white flex flex-col items-center py-4" style="width: 60px;">
                     <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mb-4">
                         RP
@@ -672,11 +677,11 @@
                                 </button>
                                 
                                 <!-- Date Range Selector -->
-                                <div class="ml-auto">
+                                <!-- <div class="ml-auto">
                                     <button class="bg-white text-gray-600 px-3 py-1 rounded-full text-sm border flex items-center">
                                         <i class="fas fa-calendar-alt mr-1"></i> Last 30 Days
                                     </button>
-                                </div>
+                                </div> -->
                             </div>
                             
                             <!-- Timeline View (default) -->
