@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AccountConnect - AI-Powered Client Management</title>
+    <title>Pillar - AI-Powered Client Management</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -77,6 +77,61 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #a3a3a3;
         }
+
+        /* -------------------------------------------------------- */
+            /* Brand-specific icon styles */
+    .icon-teams {
+        background: linear-gradient(135deg, #4050B5 0%, #5059C9 100%);
+        color: white;
+        font-size: 14px;
+    }
+    
+    .icon-slack {
+        background: #4A154B;
+        color: white;
+        font-size: 14px;
+    }
+    
+    .icon-email {
+        background: linear-gradient(135deg, #0072C6 0%, #00A4EF 100%);
+        color: white;
+        font-size: 14px;
+    }
+    
+    .channel-logo {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .channel-logo-sm {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+        border-radius: 4px;
+    }
+    
+    /* Badge styles */
+    .channel-badge-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #EF4444;
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid white;
+    }
     </style>
 </head>
 <body>
@@ -86,7 +141,7 @@
             <div class="text-center mb-8">
                 <h1 class="text-3xl font-bold text-gray-800 flex items-center justify-center">
                     <span class="text-blue-600 mr-2"><i class="fas fa-link"></i></span>
-                    AccountConnect
+                    Pillar
                 </h1>
                 <p class="text-gray-600 mt-2">AI-Powered Client Management</p>
             </div>
@@ -130,7 +185,7 @@
                     <div class="flex">
                         <div class="flex-shrink-0 flex items-center">
                             <span class="text-blue-600 text-2xl mr-2"><i class="fas fa-link"></i></span>
-                            <span class="font-bold text-xl text-gray-800">AccountConnect</span>
+                            <span class="font-bold text-xl text-gray-800">Pillar</span>
                         </div>
                         <div class="hidden sm:ml-6 sm:flex sm:items-center">
                             <div class="px-3 py-2 text-sm font-medium text-gray-700">Dashboard</div>
@@ -142,9 +197,9 @@
                     <div class="flex items-center">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                <i class="fas fa-search text-gray-400"></i>
+                                <i class="fas fa-comment text-gray-400"></i>
                             </div>
-                            <input class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:border-blue-500 sm:text-sm" placeholder="Search..." type="search">
+                            <input class="block w-96 pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-gray-50 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:bg-white focus:border-blue-500 sm:text-sm" placeholder="Ask anything within your workspace..." type="search">
                         </div>
                         <div class="ml-4 flex items-center md:ml-6">
                             <button class="p-1 rounded-full text-gray-400 hover:text-gray-500">
@@ -177,7 +232,7 @@
                         </button>
                     </div>
                 </div>
-
+        
                 <!-- AI Activity Summary -->
                 <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-12 slide-in">
                     <div class="flex items-start">
@@ -194,12 +249,22 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Client Cards -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <!-- Client Card 1 - Needs Attention -->
-                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer client-card" data-client="riverstone">
-                        <div class="flex justify-between items-start">
+        
+                <!-- Engaging Clients Section - Collapsible -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4 p-3 rounded-lg border border-amber-200" style="background-color: rgba(234, 88, 12, 0.5);">                        <div class="flex items-center">
+                            <i class="fas fa-lightbulb mr-2" style="color: #FACC15;"></i>
+                            <h2 class="text-lg font-semibold text-gray-900">Engaging</h2>
+                            <span class="ml-2 bg-amber-100 text-amber-800 text-sm font-medium px-2 py-0.5 rounded-full" style="background-color: #e18f63;">2 clients</span>
+                        </div>
+                        <button id="toggle-engaging" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="engaging-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Client Card 1 - Riverstone Properties (Needs Attention) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer client-card" data-client="riverstone">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold mr-3">
                                     RP
@@ -209,130 +274,69 @@
                                     <p class="text-sm text-gray-500">Real Estate Development</p>
                                 </div>
                             </div>
-                            <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full font-medium">Needs Attention</span>
-                        </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="font-bold text-red-600">Awaiting Response</p>
-                                <p class="text-gray-500">3</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="font-bold text-orange-600">Follow Up</p>
-                                <p class="text-gray-500">2</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="font-bold text-blue-600">Document</p>
-                                <p class="text-gray-500">8</p>
-                            </div>
-                        </div>
-                        <!-- Remove the tax return deadline line -->
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Tax return deadline in 5 days</p>
-                        </div> -->
-                    </div>
-
-                    <!-- Client Card 2 - On Track -->
-                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold mr-3">
-                                    TM
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm mb-6">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Unread</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="font-bold text-red-600 mr-2">3</span>
+                                        <div class="flex space-x-1">
+                                            <span class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                            <span class="w-5 h-5 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs">
+                                                <i class="fab fa-slack"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">TechMinds Inc</h3>
-                                    <p class="text-sm text-gray-500">Software Development</p>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Follow Up</p>
+                                    <p class="font-semibold text-orange-600">2</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Documents</p>
+                                    <p class="font-semibold text-blue-600">8</p>
                                 </div>
                             </div>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
-                        </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Email</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Teams/Slack</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                        </div>
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-yellow-600"><i class="fas fa-clock mr-1"></i> Tax return deadline in 2 weeks</p>
-                        </div> -->
-                    </div>
-
-                    <!-- Client Card 3 - On Track -->
-                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3">
-                                    GC
+                            
+                            <!-- To-do List Section (collapsible) -->
+                            <div class="mt-4 border-t border-gray-200 pt-6">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-sm font-semibold text-gray-800">Priority To-Do</h4>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800 toggle-todo">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">Green Coast Retailers</h3>
-                                    <p class="text-sm text-gray-500">Retail Chain</p>
-                                </div>
-                            </div>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
-                        </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Email</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Teams/Slack</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                        </div>
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> All tasks complete</p>
-                        </div> -->
-                    </div>
-
-                    <!-- Client Card 4 - On Track -->
-                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold mr-3">
-                                    SC
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">Sunny Cafe Group</h3>
-                                    <p class="text-sm text-gray-500">Food & Beverage</p>
+                                <div class="bg-gray-100 rounded-lg border border-gray-200 p-3">
+                                    <ul class="text-sm text-gray-600 space-y-2 todo-list">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-red-500 mt-1 mr-2"></i>
+                                            <span>Respond to tax document request (due in 2 days)</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-orange-500 mt-1 mr-2"></i>
+                                            <span>Review Q1 financial statement</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-blue-500 mt-1 mr-2"></i>
+                                            <span>Schedule follow-up call about property acquisition</span>
+                                        </li>
+                                        <li class="hidden flex items-start todo-extra">
+                                            <i class="fas fa-circle text-xs text-gray-500 mt-1 mr-2"></i>
+                                            <span>Confirm invoice #1024 payment details</span>
+                                        </li>
+                                        <li class="hidden flex items-start todo-extra">
+                                            <i class="fas fa-circle text-xs text-gray-500 mt-1 mr-2"></i>
+                                            <span>Send updated tax filing timeline</span>
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
                         </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Email</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Teams/Slack</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                        </div>
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-gray-600"><i class="fas fa-file-invoice-dollar mr-1"></i> Quarterly review scheduled next week</p>
-                        </div> -->
-                    </div>
-
-                    <!-- Client Card 5 - Needs Attention -->
-                    <div class="bg-white rounded-lg border border-red-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                        <div class="flex justify-between items-start">
+        
+                        <!-- Client Card 5 - North Medical Center (Needs Attention) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
                                     NM
@@ -342,113 +346,236 @@
                                     <p class="text-sm text-gray-500">Healthcare Provider</p>
                                 </div>
                             </div>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm mb-6">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-600">Unread</p>
+                                    <div class="flex items-center mt-1">
+                                        <span class="font-bold text-red-600 mr-2">2</span>
+                                        <div class="flex space-x-1">
+                                            <span class="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-600">Follow Up</p>
+                                    <p class="font-bold text-orange-600">1</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-600">Documents</p>
+                                    <p class="font-bold text-red-600">3</p>
+                                </div>
+                            </div>
+                            
+                            <!-- To-do List Section (collapsible) -->
+                            <div class="mt-4 border-t border-gray-200 pt-6">
+                                <div class="flex items-center justify-between mb-2">
+                                    <h4 class="text-sm font-bold text-gray-800">Priority To-Do</h4>
+                                    <button class="text-xs text-blue-600 hover:text-blue-800 toggle-todo">
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                </div>
+                                <div class="bg-gray-100 rounded-lg border border-gray-200 p-3">
+                                    <ul class="text-sm text-gray-600 space-y-2 todo-list">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-red-500 mt-1 mr-2"></i>
+                                            <span>Request missing bank statements for Q1</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-orange-500 mt-1 mr-2"></i>
+                                            <span>Follow up on insurance documentation</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-circle text-xs text-blue-500 mt-1 mr-2"></i>
+                                            <span>Review payroll discrepancies from March</span>
+                                        </li>
+                                        <li class="hidden flex items-start todo-extra">
+                                            <i class="fas fa-circle text-xs text-gray-500 mt-1 mr-2"></i>
+                                            <span>Schedule quarterly review meeting</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Email</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Teams/Slack</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                        </div>
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-red-600"><i class="fas fa-exclamation-circle mr-1"></i> Missing bank statements for Q1</p>
-                        </div> -->
                     </div>
-
-                    <!-- Client Card 6 - On Track -->
-                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                        <div class="flex justify-between items-start">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold mr-3">
-                                    EF
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">EcoFarm Produce</h3>
-                                    <p class="text-sm text-gray-500">Agriculture</p>
-                                </div>
-                            </div>
-                            <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full font-medium">On Track</span>
+                </div>
+                
+                <!-- On Track Clients Section - Collapsible -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4 bg-green-200 p-3 rounded-lg border border-green-200">
+                        <div class="flex items-center">
+                            <i class="fas fa-check-circle text-green-600 mr-2"></i>
+                            <h2 class="text-lg font-semibold text-gray-800">On Track</h2>
+                            <span class="ml-2 bg-green-300 text-green-900 text-xs px-2 py-0.5 rounded-full">4 clients</span>
                         </div>
-                        <div class="mt-8 grid grid-cols-3 gap-2 text-sm">
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Email</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
+                        <button id="toggle-on-track" class="text-gray-500 hover:text-gray-700">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="on-track-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Client Card 2 - TechMinds Inc (On Track) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold mr-3">
+                                        TM
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">TechMinds Inc</h3>
+                                        <p class="text-sm text-gray-500">Software Development</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
                             </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Teams/Slack</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
-                            </div>
-                            <div class="bg-gray-50 p-2 rounded">
-                                <p class="text-gray-500">Documents</p>
-                                <p class="font-bold text-green-600">All Caught Up!</p>
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold text-gray-800 mb-3">Last Engaged</p>
+                                    <div class="text-gray-800 flex items-center justify-between pr-3">
+                                        <p class="text-xs">2 days ago</p>
+                                        <div class="flex mt-1 space-x-1">
+                                            <span class="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                            <span class="w-4 h-4 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 text-xs">
+                                                <i class="fab fa-microsoft"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold text-gray-800 mb-3">Last Topic</p>
+                                    <p class="text-xs text-gray-800 mt-2">Quarterly Tax Prep</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold text-gray-800 mb-3">Last Doc</p>
+                                    <p class="text-xs text-gray-800 mt-2">Employee Benefits PDF</p>
+                                </div>
                             </div>
                         </div>
-                        <!-- <div class="mt-3 text-sm">
-                            <p class="text-gray-600"><i class="fas fa-check-circle mr-1"></i> Tax filing completed</p>
-                        </div> -->
+        
+                        <!-- Client Card 3 - Green Coast Retailers (On Track) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold mr-3">
+                                        GC
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Green Coast Retailers</h3>
+                                        <p class="text-sm text-gray-500">Retail Chain</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                            </div>
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Last Engaged</p>
+                                    <div class="text-gray-800 flex items-center justify-between pr-3">
+                                        <p class="text-xs">1 week ago</p>
+                                        <div class="flex mt-1 space-x-1">
+                                            <span class="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Last Topic</p>
+                                    <p class="text-xs text-gray-800">Inventory Tracking</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-semibold mb-3 text-gray-800">Last Doc</p>
+                                    <p class="text-xs text-gray-800">Monthly Report XLSX</p>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Client Card 4 - Sunny Cafe Group (On Track) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-700 font-bold mr-3">
+                                        SC
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Sunny Cafe Group</h3>
+                                        <p class="text-sm text-gray-500">Food & Beverage</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                            </div>
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Engaged</p>
+                                    <div class="text-gray-800 flex items-center justify-between pr-3">
+                                        <p class="text-xs">3 days ago</p>
+                                        <div class="flex mt-1 space-x-1">
+                                            <span class="w-4 h-4 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 text-xs">
+                                                <i class="fab fa-slack"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Topic</p>
+                                    <p class="text-xs text-gray-800">Quarterly Review</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Doc</p>
+                                    <p class="text-xs text-gray-800">Revenue Forecast PDF</p>
+                                </div>
+                            </div>
+                        </div>
+        
+                        <!-- Client Card 6 - EcoFarm Produce (On Track) -->
+                        <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold mr-3">
+                                        EF
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">EcoFarm Produce</h3>
+                                        <p class="text-sm text-gray-500">Agriculture</p>
+                                    </div>
+                                </div>
+                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                            </div>
+                            
+                            <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Engaged</p>
+                                    <div class="text-gray-800 flex items-center justify-between pr-3">
+                                        <p class="text-xs">5 days ago</p>
+                                        <div class="flex mt-1 space-x-1">
+                                            <span class="w-4 h-4 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs">
+                                                <i class="fas fa-envelope"></i>
+                                            </span>
+                                            <span class="w-4 h-4 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 text-xs">
+                                                <i class="fab fa-microsoft"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Topic</p>
+                                    <p class="text-xs text-gray-800">Tax Filing Completed</p>
+                                </div>
+                                <div class="bg-gray-100 p-2 rounded">
+                                    <p class="font-medium mb-3 text-gray-800">Last Doc</p>
+                                    <p class="text-xs text-gray-800">Tax Filing Confirmation</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Recent Activity Section -->
-            <!-- <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mt-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-4">Recent Activity</h2>
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="timeline-dot bg-blue-500 mt-1"></div>
-                        <div>
-                            <div class="flex items-center text-sm">
-                                <span class="font-medium text-gray-900">Riverstone Properties</span>
-                                <span class="mx-2 text-gray-500">•</span>
-                                <span class="text-gray-500">Today, 9:43 AM</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Sent 3 new documents: Q1 Financial Statement, Bank Records, and Invoice #1024</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="timeline-dot bg-green-500 mt-1"></div>
-                        <div>
-                            <div class="flex items-center text-sm">
-                                <span class="font-medium text-gray-900">You</span>
-                                <span class="mx-2 text-gray-500">•</span>
-                                <span class="text-gray-500">Today, 9:15 AM</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Replied to TechMinds Inc regarding quarterly tax preparation</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="timeline-dot bg-purple-500 mt-1"></div>
-                        <div>
-                            <div class="flex items-center text-sm">
-                                <span class="font-medium text-gray-900">System</span>
-                                <span class="mx-2 text-gray-500">•</span>
-                                <span class="text-gray-500">Today, 8:30 AM</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">AI categorized 12 documents from North Medical Center</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start">
-                        <div class="timeline-dot bg-yellow-500 mt-1"></div>
-                        <div>
-                            <div class="flex items-center text-sm">
-                                <span class="font-medium text-gray-900">Sunny Cafe Group</span>
-                                <span class="mx-2 text-gray-500">•</span>
-                                <span class="text-gray-500">Yesterday, 4:22 PM</span>
-                            </div>
-                            <p class="text-sm text-gray-600 mt-1">Asked question about GST/HST filing deadline</p>
-                        </div>
-                    </div>
-                </div>
-                <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">View all activity →</button>
-            </div> -->
         </div>
 
         <!-- Client Portal View (Hidden initially) -->
@@ -480,8 +607,8 @@
                         </button>
                     </div>
                     
-                    <div class="p-4 overflow-y-auto custom-scrollbar flex-1">
-                        <div class="bg-red-50 border border-red-200 rounded-md p-3 mb-4">
+                    <div class="p-4 overflow-y-auto custom-scrollbar flex-1" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div class="bg-red-50 border border-red-200 rounded-md p-3 my-4">
                             <p class="text-sm text-red-700 font-medium flex items-center">
                                 <i class="fas fa-exclamation-circle mr-1"></i> Priority: Tax deadline March 15, 2025
                             </p>
@@ -575,7 +702,7 @@
                         </div>
                         
                         <!-- Quick action buttons at bottom -->
-                        <div class="mt-8 pt-4 border-t border-gray-200">
+                        <!-- <div class="mt-8 pt-4 border-t border-gray-200">
                             <div class="space-y-2">
                                 <button class="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2 px-4 rounded transition">
                                     <i class="fas fa-paper-plane mr-1"></i> Send Message
@@ -584,7 +711,7 @@
                                     <i class="fas fa-file-upload mr-1"></i> Request Documents
                                 </button>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 
@@ -637,17 +764,17 @@
                                     </div>
                                 </div>
                                 <div class="flex space-x-2">
-                                    <div class="channel-badge bg-blue-100 text-blue-600 relative">
+                                    <div class="channel-logo icon-email relative">
                                         <i class="fas fa-envelope"></i>
-                                        <span class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">7</span>
+                                        <span class="channel-badge-count">7</span>
                                     </div>
-                                    <div class="channel-badge bg-purple-100 text-purple-600 relative">
+                                    <div class="channel-logo icon-slack relative">
                                         <i class="fab fa-slack"></i>
-                                        <span class="absolute -top-1 -right-1 bg-purple-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">3</span>
+                                        <span class="channel-badge-count">3</span>
                                     </div>
-                                    <div class="channel-badge bg-teal-100 text-teal-600 relative">
+                                    <div class="channel-logo icon-teams relative">
                                         <i class="fab fa-microsoft"></i>
-                                        <span class="absolute -top-1 -right-1 bg-teal-600 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">2</span>
+                                        <span class="channel-badge-count">2</span>
                                     </div>
                                     <button class="text-sm text-blue-600 hover:text-blue-800 ml-auto">
                                         <i class="fas fa-plus-circle mr-1"></i> Add Channel
@@ -863,6 +990,9 @@
                                             </button>
                                         </div>
                                         <div>
+                                            <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 mr-3 text-sm font-medium">
+                                                Reply with AI
+                                            </button>
                                             <button class="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2 text-sm font-medium">
                                                 Send Reply
                                             </button>
@@ -1212,6 +1342,61 @@
             document.getElementById('login-screen').classList.add('hidden');
             document.getElementById('app').classList.remove('hidden');
         });
+
+        // Section toggling for Engaging and On Track sections
+        document.getElementById('toggle-engaging').addEventListener('click', function(e) {
+            e.stopPropagation(); // Stop event propagation
+            const content = document.getElementById('engaging-content');
+            const icon = this.querySelector('i');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'grid';
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            }
+        });
+
+        document.getElementById('toggle-on-track').addEventListener('click', function(e) {
+            e.stopPropagation(); // Stop event propagation
+            const content = document.getElementById('on-track-content');
+            const icon = this.querySelector('i');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'grid';
+                icon.classList.remove('fa-chevron-right');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                content.style.display = 'none';
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-right');
+            }
+        });
+
+        // To-do list toggling for each client card
+        document.querySelectorAll('.toggle-todo').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation(); // Stop event propagation
+                const todoListContainer = this.closest('div').nextElementSibling;
+                const extraItems = todoListContainer.querySelectorAll('.todo-extra');
+                const icon = this.querySelector('i');
+                
+                extraItems.forEach(item => {
+                    if (item.classList.contains('hidden')) {
+                        item.classList.remove('hidden');
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        item.classList.add('hidden');
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+            });
+        });
         
         // Dashboard to Client Portal navigation
         document.querySelectorAll('.client-card').forEach(card => {
@@ -1294,3 +1479,57 @@
     </script>
 </body>
 </html>
+
+
+<!-- -------------------------------------------------------------------------------------------------------------------------------- -->
+             <!-- Recent Activity Section -->
+            <!-- <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-6 mt-6">
+                <h2 class="text-lg font-bold text-gray-800 mb-4">Recent Activity</h2>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-blue-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">Riverstone Properties</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 9:43 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Sent 3 new documents: Q1 Financial Statement, Bank Records, and Invoice #1024</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-green-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">You</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 9:15 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Replied to TechMinds Inc regarding quarterly tax preparation</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-purple-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">System</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Today, 8:30 AM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">AI categorized 12 documents from North Medical Center</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="timeline-dot bg-yellow-500 mt-1"></div>
+                        <div>
+                            <div class="flex items-center text-sm">
+                                <span class="font-medium text-gray-900">Sunny Cafe Group</span>
+                                <span class="mx-2 text-gray-500">•</span>
+                                <span class="text-gray-500">Yesterday, 4:22 PM</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-1">Asked question about GST/HST filing deadline</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="mt-4 text-blue-600 text-sm font-medium hover:text-blue-800">View all activity →</button>
+            </div> -->
