@@ -224,14 +224,14 @@
                 <div class="flex justify-between items-center mb-10">
                     <div class="flex items-center">
                         <h1 class="text-3xl font-bold text-gray-800 mr-5">Client Dashboard</h1>
-                        <img src="https://www.oneaccounting.cpa/wp-content/uploads/blue.png"  width="160" height="160" />
+                        <!-- <img src="https://www.oneaccounting.cpa/wp-content/uploads/blue.png"  width="160" height="160" /> -->
                     </div>
                     <div class="flex space-x-2">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                        <!-- <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
                             <i class="fas fa-clock mr-1"></i> Last updated: Just now
-                        </span>
+                        </span> -->
                         <button class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-                            <i class="fas fa-plus mr-2"></i> Add Client
+                            <i class="fas fa-plus mr-2"></i> Add Project
                         </button>
                     </div>
                 </div>
@@ -257,7 +257,7 @@
                 <div class="mb-8">
                     <div class="flex items-center justify-between mb-4 p-3 rounded-lg border border-amber-200" style="background-color: rgba(234, 88, 12, 0.5);">                        <div class="flex items-center">
                             <i class="fas fa-lightbulb mr-2" style="color: #FACC15;"></i>
-                            <h2 class="text-lg font-semibold text-gray-900">Engaging</h2>
+                            <h2 class="text-lg font-semibold text-gray-900">Active</h2>
                             <span class="ml-2 bg-amber-100 text-amber-800 text-sm font-medium px-2 py-0.5 rounded-full" style="background-color: #e18f63;">2 clients</span>
                         </div>
                         <button id="toggle-engaging" class="text-gray-500 hover:text-gray-700">
@@ -268,15 +268,19 @@
                     <div id="engaging-content" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <!-- Client Card 1 - Riverstone Properties (Needs Attention) -->
                         <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer client-card" data-client="riverstone">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold mr-3">
-                                    RP
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-bold mr-3">
+                                        RP
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">Riverstone Properties</h3>
+                                        <p class="text-sm text-gray-500">Real Estate Development</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">Riverstone Properties</h3>
-                                    <p class="text-sm text-gray-500">Real Estate Development</p>
-                                </div>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
+               
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm mb-6">
                                 <div class="bg-gray-100 p-2 rounded">
@@ -294,7 +298,7 @@
                                     </div>
                                 </div>
                                 <div class="bg-gray-100 p-2 rounded">
-                                    <p class="font-semibold mb-3 text-gray-800">Follow Up</p>
+                                    <p class="font-semibold mb-3 text-gray-800">Connected Channels</p>
                                     <p class="font-semibold text-orange-600">2</p>
                                 </div>
                                 <div class="bg-gray-100 p-2 rounded">
@@ -340,15 +344,19 @@
         
                         <!-- Client Card 5 - North Medical Center (Needs Attention) -->
                         <div class="bg-white rounded-lg border border-gray-200 shadow-sm p-5 card-hover transition duration-300 cursor-pointer">
-                            <div class="flex items-center">
-                                <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
-                                    NM
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-700 font-bold mr-3">
+                                        NM
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-gray-800">North Medical Center</h3>
+                                        <p class="text-sm text-gray-500">Healthcare Provider</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 class="font-bold text-gray-800">North Medical Center</h3>
-                                    <p class="text-sm text-gray-500">Healthcare Provider</p>
-                                </div>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
+
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm mb-6">
                                 <div class="bg-gray-100 p-2 rounded">
@@ -363,7 +371,7 @@
                                     </div>
                                 </div>
                                 <div class="bg-gray-100 p-2 rounded">
-                                    <p class="font-semibold mb-3 text-gray-600">Follow Up</p>
+                                    <p class="font-semibold mb-3 text-gray-600">Connected Channels</p>
                                     <p class="font-bold text-orange-600">1</p>
                                 </div>
                                 <div class="bg-gray-100 p-2 rounded">
@@ -410,7 +418,7 @@
                     <div class="flex items-center justify-between mb-4 bg-green-200 p-3 rounded-lg border border-green-200">
                         <div class="flex items-center">
                             <i class="fas fa-check-circle text-green-600 mr-2"></i>
-                            <h2 class="text-lg font-semibold text-gray-800">On Track</h2>
+                            <h2 class="text-lg font-semibold text-gray-800">Archived</h2>
                             <span class="ml-2 bg-green-300 text-green-900 text-xs px-2 py-0.5 rounded-full">4 clients</span>
                         </div>
                         <button id="toggle-on-track" class="text-gray-500 hover:text-gray-700">
@@ -431,7 +439,7 @@
                                         <p class="text-sm text-gray-500">Software Development</p>
                                     </div>
                                 </div>
-                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
@@ -472,7 +480,7 @@
                                         <p class="text-sm text-gray-500">Retail Chain</p>
                                     </div>
                                 </div>
-                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
@@ -510,7 +518,7 @@
                                         <p class="text-sm text-gray-500">Food & Beverage</p>
                                     </div>
                                 </div>
-                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
@@ -548,7 +556,7 @@
                                         <p class="text-sm text-gray-500">Agriculture</p>
                                     </div>
                                 </div>
-                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-medium">All Caught Up</span>
+                                <p class="text-sm text-gray-500">Business</p>
                             </div>
                             
                             <div class="mt-6 grid grid-cols-3 gap-2 text-sm">
